@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 
 export const metadata: Metadata = {
-  title: "ทะเบียนกฎหมายเมือง | RMS",
+  title: "เกิดใหม่ในค่ายทหารแดนซากุระ | RฺฺฺP",
   description: "กฎของแมพ วิธีการเล่น และผู้ช่วย AI ตอบคำถามกฎ",
 };
 

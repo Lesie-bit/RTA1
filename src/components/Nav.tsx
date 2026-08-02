@@ -6,7 +6,7 @@ export default function Nav() {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-baseline gap-2">
           <span className="font-display text-lg text-[var(--color-paper-50)]">
-            ทะเบียนกฎหมายเมือง
+            เกดินใหม่ในค่ายทหารแดนซากุระ
           </span>
           <span className="font-mono text-[11px] text-[var(--color-badge-400)]">
             §RMS

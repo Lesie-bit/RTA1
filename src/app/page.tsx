@@ -18,12 +18,12 @@ export default async function HomePage() {
         <h1 className="font-display mt-4 max-w-2xl text-5xl leading-[1.15] text-[var(--color-paper-50)]">
           กฎและวิธีการเล่น
           <br />
-          แมพเกิดใหม่ในค่ายซากุระ
+          เกิดใหม่ในค่ายทหารแดนซากุระ
         </h1>
         <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-[var(--color-slate-400)]">
           รวมกฎของแมพ วิธีการเล่น และผู้ช่วย AI ที่ตอบคำถามจากทะเบียนกฎจริง
         </p>
-        <div className="mt-9 flex flex-wrap items-center gap-4">
+        <div className="mt-6 flex flex-wrap items-center gap-4">
           <Link
             href="/rules"
             className="stamp inline-flex items-center gap-2 px-5 py-2.5 text-sm text-[var(--color-badge-400)]"

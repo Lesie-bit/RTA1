@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import RulesManager from "@/components/admin/RulesManager";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
+import DashboardTabs from "@/components/admin/DashboardTabs";
+import type { AdminUser } from "@/lib/types";
 
 export const revalidate = 0;
 
@@ -32,21 +33,59 @@ export default async function AdminDashboardPage() {
     );
   }
 
-  const [{ data: rules }, { data: categories }] = await Promise.all([
+  const isOwner = profile.role === "owner";
+
+  const [
+    { data: rules },
+    { data: categories },
+    { data: guides },
+    { data: guideCategories },
+    adminUsers,
+  ] = await Promise.all([
     supabase.from("rules").select("*").order("code"),
     supabase.from("categories").select("*").order("sort_order"),
+    supabase.from("guides").select("*").order("sort_order"),
+    supabase.from("guide_categories").select("*").order("sort_order"),
+    isOwner ? loadAdminUsers() : Promise.resolve([] as AdminUser[]),
   ]);
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-14">
       <p className="font-mono text-xs tracking-[0.2em] text-[var(--color-badge-400)]">
-        แผงควบคุม — {profile.role === "owner" ? "เจ้าของระบบ" : "ผู้แก้ไข"}
+        แผงควบคุม — {isOwner ? "เจ้าของระบบ" : "ผู้แก้ไข"}
       </p>
       <h1 className="font-display mt-3 text-3xl text-[var(--color-paper-50)]">
         จัดการกฎของแมพ
       </h1>
 
-      <RulesManager initialRules={rules ?? []} categories={categories ?? []} />
+      <DashboardTabs
+        rules={rules ?? []}
+        categories={categories ?? []}
+        guides={guides ?? []}
+        guideCategories={guideCategories ?? []}
+        role={profile.role}
+        currentUserId={user.id}
+        initialUsers={adminUsers}
+      />
     </div>
   );
+}
+
+/** ดึงรายชื่อแอดมินทั้งหมดพร้อมอีเมล — ใช้ service client เพราะ email อยู่ใน auth.users */
+async function loadAdminUsers(): Promise<AdminUser[]> {
+  const service = createServiceClient();
+
+  const [{ data: profiles }, { data: authList }] = await Promise.all([
+    service.from("admin_profiles").select("*").order("created_at"),
+    service.auth.admin.listUsers(),
+  ]);
+
+  const emailByUserId = new Map(
+    (authList?.users ?? []).map((u) => [u.id, u.email])
+  );
+
+  return (profiles ?? []).map((p) => ({
+    ...p,
+    email: emailByUserId.get(p.user_id) ?? "(ไม่พบอีเมล)",
+  }));
 }

@@ -11,7 +11,7 @@ const emptyForm = {
   title: "",
   body: "",
   category_id: "",
-  severity: "normal" as Severity,
+  severity: "light" as Severity,
   is_published: true,
 };
 
@@ -192,9 +192,10 @@ export default function RulesManager({
             onChange={(e) => setForm({ ...form, severity: e.target.value as Severity })}
             className="w-full rounded border border-[var(--color-ink-600)] bg-[var(--color-ink-950)] px-3 py-2 text-sm text-[var(--color-paper-100)] outline-none focus:border-[var(--color-badge-500)]"
           >
-            <option value="normal">ระดับ: ปกติ</option>
-            <option value="warning">ระดับ: เฝ้าระวัง</option>
-            <option value="severe">ระดับ: ร้ายแรง</option>
+            <option value="petty">ระดับโทษ: ลหุโทษ</option>
+            <option value="light">ระดับโทษ: โทษชั้นเบา</option>
+            <option value="medium">ระดับโทษ: โทษชั้นกลาง</option>
+            <option value="heavy">ระดับโทษ: โทษชั้นหนัก</option>
           </select>
 
           <label className="flex items-center gap-2 text-xs text-[var(--color-slate-400)]">
